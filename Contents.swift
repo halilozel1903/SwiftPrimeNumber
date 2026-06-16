@@ -1,23 +1,28 @@
+/// Returns `true` when `number` is a prime number.
+///
+/// The implementation checks divisibility only up to the square root of the
+/// input, which avoids the unnecessary work of testing every smaller number.
 func isPrime(_ number: Int) -> Bool {
-    if number < 2 {
-        return false
-    }
-    for i in 2..<number {
-        if number % i == 0 {
+    guard number >= 2 else { return false }
+    guard number != 2 else { return true }
+    guard !number.isMultiple(of: 2) else { return false }
+
+    var divisor = 3
+    while divisor * divisor <= number {
+        if number.isMultiple(of: divisor) {
             return false
         }
+        divisor += 2
     }
+
     return true
 }
 
+/// Finds all prime numbers from 2 through `limit`.
 func findPrimes(upTo limit: Int) -> [Int] {
-    var primes = [Int]()
-    for number in 2...limit {
-        if isPrime(number) {
-            primes.append(number)
-        }
-    }
-    return primes
+    guard limit >= 2 else { return [] }
+
+    return (2...limit).filter(isPrime)
 }
 
 let limit = 100
